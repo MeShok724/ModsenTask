@@ -14,9 +14,6 @@ namespace ModsenTask.Core.Entities
         public string Genre { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public int AuthorId { get; set; }
-        public DateTime? BorrowedAt { get; set; }
-        public DateTime? ReturnBy { get; set; }
-
         public Author Author { get; set; } = null!;
     }
 }
