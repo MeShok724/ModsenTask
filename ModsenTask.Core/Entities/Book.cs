@@ -14,6 +14,8 @@ namespace ModsenTask.Core.Entities
         public string Genre { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public int AuthorId { get; set; }
+        public bool IsTaken { get; set; } = false;
+        public byte[] Image { get; set; } = [];
         public Author Author { get; set; } = null!;
     }
 }

@@ -14,7 +14,7 @@ namespace ModsenTask.Core.Entities
         public int BookId { get; set; }
         public Book Book { get; set; } = null!;
 
-        public DateTime BorrowedAt { get; set; }
+        public DateTime TakenAt { get; set; }
         public DateTime ReturnBy { get; set; }
     }
 }
