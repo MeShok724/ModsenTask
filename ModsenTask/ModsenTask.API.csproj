@@ -20,10 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\ModsenTask.Application\ModsenTask.Application.csproj" />
     <ProjectReference Include="..\ModsenTask.Infrastructure\ModsenTask.Infrastructure.csproj" />
   </ItemGroup>
 

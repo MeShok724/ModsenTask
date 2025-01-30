@@ -8,11 +8,10 @@ namespace ModsenTask.Core.Entities
 {
     public class User
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
         public string Role { get; set; } = "User";
-
-        public List<UserBook> BorrowedBooks { get; set; } = new();
+        public List<UserBook> BorrowedBooks { get; set; } = [];
     }
 }

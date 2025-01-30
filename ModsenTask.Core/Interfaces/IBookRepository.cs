@@ -5,12 +5,11 @@ namespace ModsenTask.Infrastructure.Repositories
     public interface IBookRepository
     {
         Task AddBookAsync(Book book);
-        Task DeleteBookAsync(int bookId);
+        Task DeleteBookAsync(Guid bookId);
         Task<List<Book>> GetAllBooksAsync();
-        Task<Book?> GetBookByIdAsync(int bookId);
+        Task<Book?> GetBookByIdAsync(Guid bookId);
         Task<Book?> GetBookByIsbnAsync(string isbn);
-        Task<bool> LendBookAsync(int bookId, Guid userId, DateTime returnDate);
+        Task<bool> LendBookAsync(Guid bookId, Guid userId, DateTime lendingDate, DateTime returnDate);
         Task UpdateBookAsync(Book book);
-        Task UpdateBookImageAsync(int bookId, byte[] imageData);
     }
 }

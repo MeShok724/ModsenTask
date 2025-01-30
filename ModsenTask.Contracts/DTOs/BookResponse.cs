@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ModsenTask.Core.Entities
+﻿namespace ModsenTask.Application.DTOs
 {
-    public class Book
+    public class BookResponse
     {
         public Guid Id { get; set; }
         public string ISBN { get; set; } = string.Empty;
@@ -16,6 +10,5 @@ namespace ModsenTask.Core.Entities
         public Guid AuthorId { get; set; }
         public bool IsTaken { get; set; } = false;
         public byte[] Image { get; set; } = [];
-        public Author Author { get; set; } = null!;
     }
 }

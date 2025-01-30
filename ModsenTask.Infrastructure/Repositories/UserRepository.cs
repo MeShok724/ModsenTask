@@ -23,7 +23,7 @@ namespace ModsenTask.Infrastructure.Repositories
                 .FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<List<User>> GetAllUsersAsync()
         {
             return await _context.Users.ToListAsync();
         }
@@ -50,7 +50,7 @@ namespace ModsenTask.Infrastructure.Repositories
             }
         }
 
-        public async Task<IEnumerable<UserBook>> GetUserBooksAsync(Guid userId)
+        public async Task<List<UserBook>> GetUserBooksAsync(Guid userId)
         {
             return await _context.UserBooks
                 .Include(ub => ub.Book)

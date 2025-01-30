@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35521.163 d17.12
+VisualStudioVersion = 17.12.35521.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenTask.API", "ModsenTask\ModsenTask.API.csproj", "{C7969C49-6906-4435-AEC3-F82D7A83C652}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenTask.Application", "ModsenTask.Application\ModsenTask.Application.csproj", "{3816B889-C122-46C0-82F0-B866CBBF81CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenTask.Infrastructure", "ModsenTask.Infrastructure\ModsenTask.Infrastructure.csproj", "{6F68B8AF-A6AF-468F-B691-57D278E855C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenTask.Contracts", "ModsenTask.Contracts\ModsenTask.Contracts.csproj", "{E59607D5-93C8-4ED7-9A9C-A1206C1D1E9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{6F68B8AF-A6AF-468F-B691-57D278E855C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F68B8AF-A6AF-468F-B691-57D278E855C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F68B8AF-A6AF-468F-B691-57D278E855C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E59607D5-93C8-4ED7-9A9C-A1206C1D1E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E59607D5-93C8-4ED7-9A9C-A1206C1D1E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E59607D5-93C8-4ED7-9A9C-A1206C1D1E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E59607D5-93C8-4ED7-9A9C-A1206C1D1E9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

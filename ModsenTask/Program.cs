@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using ModsenTask.Application.Mapping;
+using ModsenTask.Application.Services;
 using ModsenTask.Infrastructure.Persistence;
 using ModsenTask.Infrastructure.Repositories;
 
@@ -11,6 +13,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<IBookService, BookService>();
+
+builder.Services.AddAutoMapper(typeof(AuthorProfile), typeof(BookProfile));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

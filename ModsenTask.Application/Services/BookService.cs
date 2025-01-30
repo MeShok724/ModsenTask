@@ -1,4 +1,6 @@
-﻿using ModsenTask.Core.Entities;
+﻿using AutoMapper;
+using ModsenTask.Application.DTOs;
+using ModsenTask.Core.Entities;
 using ModsenTask.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
@@ -8,31 +10,42 @@ using System.Threading.Tasks;
 
 namespace ModsenTask.Application.Services
 {
-    public class BookService(IBookRepository bookRepository)
+    public class BookService(IBookRepository bookRepository, IMapper mapper) : IBookService
     {
         private readonly IBookRepository _bookRepository = bookRepository;
+        private readonly IMapper _mapper = mapper;
 
-        public async Task<List<Book>> GetAllBooksAsync()
+        public async Task<List<BookResponse>> GetAllBooksAsync()
         {
-            return await _bookRepository.GetAllBooksAsync();
+            var books = await _bookRepository.GetAllBooksAsync();
+            return _mapper.Map<List<BookResponse>>(books);
         }
-        public async Task<Book?> GetBookByIdAsync(int bookId)
+        public async Task<BookResponse?> GetBookByIdAsync(Guid bookId)
         {
-            return await _bookRepository.GetBookByIdAsync(bookId);
+            var book = await _bookRepository.GetBookByIdAsync(bookId);
+            if (book == null)
+                return null;
+            return _mapper.Map<BookResponse>(book);
         }
-        public async Task<Book?> GetBookByIsbnAsync(string isbn)
+        public async Task<BookResponse?> GetBookByIsbnAsync(string isbn)
         {
-            return await _bookRepository.GetBookByIsbnAsync(isbn);
+            var book = await _bookRepository.GetBookByIsbnAsync(isbn);
+            if (book == null)
+                return null;
+            return _mapper.Map<BookResponse>(book);
         }
-        public async Task AddBookAsync(Book book)
+        public async Task<Guid> AddBookAsync(BookRequest bookRequest)
         {
+            Book book = _mapper.Map<Book>(bookRequest);
+            book.Id = Guid.NewGuid();
             await _bookRepository.AddBookAsync(book);
+            return book.Id;
         }
         public async Task UpdateBookAsync(Book book)
         {
             await _bookRepository.UpdateBookAsync(book);
         }
-        public async Task<bool> DeleteBookAsync(int bookId)
+        public async Task<bool> DeleteBookAsync(Guid bookId)
         {
             var book = await _bookRepository.GetBookByIdAsync(bookId);
             if (book == null)
@@ -41,18 +54,9 @@ namespace ModsenTask.Application.Services
             await _bookRepository.DeleteBookAsync(bookId);
             return true;
         }
-        public async Task<bool> LendBookAsync(int bookId, Guid userId, DateTime returnDate)
+        public async Task<bool> LendBookAsync(Guid bookId, Guid userId, DateTime returnDate)
         {
-            return await _bookRepository.LendBookAsync(bookId, userId, returnDate);
-        }
-        public async Task<bool> UpdateBookImageAsync(int bookId, byte[] imageData)
-        {
-            var book = await _bookRepository.GetBookByIdAsync(bookId);
-            if (book == null)
-                return false;
-
-            await _bookRepository.UpdateBookImageAsync(bookId, imageData);
-            return true;
+            return await _bookRepository.LendBookAsync(bookId, userId, DateTime.UtcNow, returnDate);
         }
     }
 }

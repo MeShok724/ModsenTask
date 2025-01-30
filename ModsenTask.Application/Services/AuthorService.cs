@@ -1,4 +1,6 @@
-﻿using ModsenTask.Core.Entities;
+﻿using AutoMapper;
+using ModsenTask.Application.DTOs;
+using ModsenTask.Core.Entities;
 using ModsenTask.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
@@ -8,23 +10,32 @@ using System.Threading.Tasks;
 
 namespace ModsenTask.Application.Services
 {
-    public class AuthorService(IAuthorRepository authorRepository)
+    public class AuthorService(IAuthorRepository authorRepository, IMapper mapper) : IAuthorService
     {
         private readonly IAuthorRepository _authorRepository = authorRepository;
+        private readonly IMapper _mapper = mapper;
 
-        public async Task<List<Author>> GetAllAuthorsAsync()
+        public async Task<List<AuthorResponse>> GetAllAuthorsAsync()
         {
-            return await _authorRepository.GetAllAsync();
+            var authors = await _authorRepository.GetAllAsync();
+            return _mapper.Map<List<AuthorResponse>>(authors);
         }
 
-        public async Task<Author?> GetAuthorByIdAsync(int authorId)
+        public async Task<AuthorResponse?> GetAuthorByIdAsync(Guid authorId)
         {
-            return await _authorRepository.GetByIdAsync(authorId);
+            var author = await _authorRepository.GetByIdAsync(authorId);
+            if (author == null)
+                return null;
+            return _mapper.Map<AuthorResponse>(author);
         }
 
-        public async Task AddAuthorAsync(Author author)
+        public async Task<Guid> AddAuthorAsync(AuthorRequest authorRequest)
         {
+            var author = _mapper.Map<Author>(authorRequest);
+            author.Id = Guid.NewGuid();
+
             await _authorRepository.AddAsync(author);
+            return author.Id;
         }
 
         public async Task<bool> UpdateAuthorAsync(Author author)
@@ -37,7 +48,7 @@ namespace ModsenTask.Application.Services
             return true;
         }
 
-        public async Task<bool> DeleteAuthorAsync(int authorId)
+        public async Task<bool> DeleteAuthorAsync(Guid authorId)
         {
             var author = await _authorRepository.GetByIdAsync(authorId);
             if (author == null)
@@ -47,9 +58,10 @@ namespace ModsenTask.Application.Services
             return true;
         }
 
-        public async Task<List<Book>> GetBooksByAuthorAsync(int authorId)
+        public async Task<List<BookResponse>> GetBooksByAuthorAsync(Guid authorId)
         {
-            return await _authorRepository.GetBooksAsync(authorId);
+            var books = await _authorRepository.GetBooksAsync(authorId);
+            return _mapper.Map<List<BookResponse>>(books);
         }
     }
 }

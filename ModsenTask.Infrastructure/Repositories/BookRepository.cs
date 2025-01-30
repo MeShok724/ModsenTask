@@ -10,15 +10,20 @@ namespace ModsenTask.Infrastructure.Repositories
 
         public async Task<List<Book>> GetAllBooksAsync()
         {
-            return await _context.Books.Include(b => b.Author).ToListAsync();
+            return await _context.Books
+                .Include(b => b.Author)
+                .ToListAsync();
         }
-        public async Task<Book?> GetBookByIdAsync(int bookId)
+        public async Task<Book?> GetBookByIdAsync(Guid bookId)
         {
-            return await _context.Books.Include(b => b.Author).FirstOrDefaultAsync(b => b.Id == bookId);
+            return await _context.Books
+                .Include(b => b.Author)
+                .FirstOrDefaultAsync(b => b.Id == bookId);
         }
         public async Task<Book?> GetBookByIsbnAsync(string isbn)
         {
-            return await _context.Books.FirstOrDefaultAsync(b => b.ISBN == isbn);
+            return await _context.Books
+                .FirstOrDefaultAsync(b => b.ISBN == isbn);
         }
         public async Task AddBookAsync(Book book)
         {
@@ -30,7 +35,7 @@ namespace ModsenTask.Infrastructure.Repositories
             _context.Books.Update(book);
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteBookAsync(int bookId)
+        public async Task DeleteBookAsync(Guid bookId)
         {
             var book = await _context.Books.FindAsync(bookId);
             if (book != null)
@@ -39,7 +44,7 @@ namespace ModsenTask.Infrastructure.Repositories
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task<bool> LendBookAsync(int bookId, Guid userId, DateTime returnDate)
+        public async Task<bool> LendBookAsync(Guid bookId, Guid userId, DateTime lendingDate, DateTime returnDate)
         {
             var book = await _context.Books.FindAsync(bookId);
             if (book == null || book.IsTaken)
@@ -49,7 +54,7 @@ namespace ModsenTask.Infrastructure.Repositories
             {
                 UserId = userId,
                 BookId = bookId,
-                TakenAt = DateTime.UtcNow,
+                TakenAt = lendingDate,
                 ReturnBy = returnDate
             };
 

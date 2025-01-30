@@ -13,7 +13,7 @@ namespace ModsenTask.Infrastructure.Repositories
             return await _context.Authors.ToListAsync();
         }
 
-        public async Task<Author?> GetByIdAsync(int authorId)
+        public async Task<Author?> GetByIdAsync(Guid authorId)
         {
             return await _context.Authors.FindAsync(authorId);
         }
@@ -30,7 +30,7 @@ namespace ModsenTask.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int authorId)
+        public async Task DeleteAsync(Guid authorId)
         {
             var author = await _context.Authors.FindAsync(authorId);
             if (author != null)
@@ -40,7 +40,7 @@ namespace ModsenTask.Infrastructure.Repositories
             }
         }
 
-        public async Task<List<Book>> GetBooksAsync(int authorId)
+        public async Task<List<Book>> GetBooksAsync(Guid authorId)
         {
             return await _context.Books
                 .Where(book => book.AuthorId == authorId)

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ModsenTask.Application.Services
 {
-    public class UserService(IUserRepository userRepository)
+    public class UserService(IUserRepository userRepository) : IUserService
     {
         private readonly IUserRepository _userRepository = userRepository;
 
@@ -22,14 +22,16 @@ namespace ModsenTask.Application.Services
             return await _userRepository.GetUserByEmailAsync(email);
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<List<User>> GetAllUsersAsync()
         {
             return await _userRepository.GetAllUsersAsync();
         }
 
-        public async Task AddUserAsync(User user)
+        public async Task<bool> AddUserAsync(User user)
         {
             await _userRepository.AddUserAsync(user);
+            return true;
+            //TODO: изменить после добавления регистрации
         }
 
         public async Task UpdateUserAsync(User user)
@@ -47,7 +49,7 @@ namespace ModsenTask.Application.Services
             return true;
         }
 
-        public async Task<IEnumerable<UserBook>> GetUserBooksAsync(Guid userId)
+        public async Task<List<UserBook>> GetUserBooksAsync(Guid userId)
         {
             return await _userRepository.GetUserBooksAsync(userId);
         }
