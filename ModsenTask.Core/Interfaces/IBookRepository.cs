@@ -11,6 +11,6 @@ namespace ModsenTask.Infrastructure.Repositories
         Task<Book?> GetBookByIsbnAsync(string isbn);
         Task<bool> LendBookAsync(int bookId, Guid userId, DateTime returnDate);
         Task UpdateBookAsync(Book book);
-        Task UpdateBookImageAsync(Guid bookId, byte[] imageData);
+        Task UpdateBookImageAsync(int bookId, byte[] imageData);
     }
 }

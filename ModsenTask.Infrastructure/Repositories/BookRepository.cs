@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ModsenTask.Core.Entities;
 using ModsenTask.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModsenTask.Infrastructure.Repositories
 {
@@ -63,7 +58,7 @@ namespace ModsenTask.Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
-        public async Task UpdateBookImageAsync(Guid bookId, byte[] imageData)
+        public async Task UpdateBookImageAsync(int bookId, byte[] imageData)
         {
             var book = await _context.Books.FindAsync(bookId);
             if (book != null)
