@@ -40,13 +40,12 @@ namespace ModsenTask.API.Controllers
                 return BadRequest("Некорректные данные");
             return Ok(result.Item2);
         }
-        [HttpPut]
-        public async Task<ActionResult> UpdateBook([FromBody] Book book)
+        [HttpPut("{bookId:Guid}")]
+        public async Task<ActionResult> UpdateBook(Guid bookId, [FromBody] BookRequest bookRequest)
         {
-            if (book is null)
-                return BadRequest("Некорректные данные");
-
-            await _bookService.UpdateBookAsync(book);
+            bool result = await _bookService.UpdateBookAsync(bookId, bookRequest);
+            if (!result)
+                return NotFound();
             return Ok();
         }
         [HttpDelete("{id:Guid}")]
@@ -63,6 +62,7 @@ namespace ModsenTask.API.Controllers
         }
 
         //[HttpPut("{bookId:guid}/image")]
+        //[Consumes("multipart/form-data")]
         //public async Task<ActionResult> UpdateBookImage(Guid bookId, [FromForm] IFormFile image)
         //{
         //    if (image is null || image.Length == 0)

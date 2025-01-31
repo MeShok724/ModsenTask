@@ -11,6 +11,7 @@ namespace ModsenTask.Application.Services
         Task<BookResponse?> GetBookByIdAsync(Guid bookId);
         Task<BookResponse?> GetBookByIsbnAsync(string isbn);
         Task<bool> LendBookAsync(Guid bookId, Guid userId, DateTime returnDate);
-        Task UpdateBookAsync(Book book);
+        Task<bool> UpdateBookAsync(Guid bookId, BookRequest bookRequest);
+        Task<bool> UpdateBookImageAsync(Guid bookId, byte[] imageData);
     }
 }

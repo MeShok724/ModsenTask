@@ -38,8 +38,10 @@ namespace ModsenTask.Application.Services
             return author.Id;
         }
 
-        public async Task<bool> UpdateAuthorAsync(Author author)
+        public async Task<bool> UpdateAuthorAsync(Guid authorId, AuthorRequest authorRequest)
         {
+            Author author = _mapper.Map<Author>(authorRequest);
+            author.Id = authorId;
             var existingAuthor = await _authorRepository.GetByIdAsync(author.Id);
             if (existingAuthor == null)
                 return false;

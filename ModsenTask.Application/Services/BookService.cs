@@ -43,9 +43,15 @@ namespace ModsenTask.Application.Services
                 return (false, Guid.Empty);
             return (true, book.Id);
         }
-        public async Task UpdateBookAsync(Book book)
+        public async Task<bool> UpdateBookAsync(Guid bookId, BookRequest bookRequest)
         {
+            Book book = _mapper.Map<Book>(bookRequest);
+            book.Id = bookId;
+            var existsBook = await _bookRepository.GetBookByIdAsync(bookId);
+            if (existsBook == null)
+                return false;
             await _bookRepository.UpdateBookAsync(book);
+            return true;
         }
         public async Task<bool> DeleteBookAsync(Guid bookId)
         {
@@ -59,6 +65,16 @@ namespace ModsenTask.Application.Services
         public async Task<bool> LendBookAsync(Guid bookId, Guid userId, DateTime returnDate)
         {
             return await _bookRepository.LendBookAsync(bookId, userId, DateTime.UtcNow, returnDate);
+        }
+
+        public async Task<bool> UpdateBookImageAsync(Guid bookId, byte[] imageData)
+        {
+            var book = await _bookRepository.GetBookByIdAsync(bookId);
+            if (book == null)
+                return false;
+            book.Image = imageData;
+            await _bookRepository.UpdateBookAsync(book);
+            return true;
         }
     }
 }

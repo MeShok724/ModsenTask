@@ -10,6 +10,6 @@ namespace ModsenTask.Application.Services
         Task<List<AuthorResponse>> GetAllAuthorsAsync();
         Task<AuthorResponse?> GetAuthorByIdAsync(Guid authorId);
         Task<List<BookResponse>> GetBooksByAuthorAsync(Guid authorId);
-        Task<bool> UpdateAuthorAsync(Author author);
+        Task<bool> UpdateAuthorAsync(Guid authorId, AuthorRequest authorRequest);
     }
 }

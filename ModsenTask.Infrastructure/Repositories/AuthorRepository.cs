@@ -26,7 +26,16 @@ namespace ModsenTask.Infrastructure.Repositories
 
         public async Task UpdateAsync(Author author)
         {
-            _context.Authors.Update(author);
+            var authorToUpdate = await _context.Authors
+                .FindAsync(author.Id);
+            if (authorToUpdate == null)
+                return;
+
+            authorToUpdate.FirstName = author.FirstName;
+            authorToUpdate.LastName = author.LastName;
+            authorToUpdate.DateOfBirth = author.DateOfBirth;
+            authorToUpdate.Country = author.Country;
+
             await _context.SaveChangesAsync();
         }
 

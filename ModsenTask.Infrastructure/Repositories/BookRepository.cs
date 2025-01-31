@@ -37,7 +37,20 @@ namespace ModsenTask.Infrastructure.Repositories
         }
         public async Task UpdateBookAsync(Book book)
         {
-            _context.Books.Update(book);
+            var bookToUpdate = await _context.Books
+                .FindAsync(book.Id);
+            if (bookToUpdate == null) 
+                return;
+
+            //bookToUpdate.ISBN = book.ISBN;
+            //bookToUpdate.Title = book.Title;
+            //bookToUpdate.Genre = book.Genre;
+            //bookToUpdate.Description = book.Description;
+            //bookToUpdate.AuthorId = book.AuthorId;
+            //bookToUpdate.IsTaken = book.IsTaken;
+            //bookToUpdate.Image = book.Image;
+
+            _context.Entry(bookToUpdate).CurrentValues.SetValues(book);
             await _context.SaveChangesAsync();
         }
         public async Task DeleteBookAsync(Guid bookId)
