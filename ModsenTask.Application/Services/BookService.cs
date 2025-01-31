@@ -34,12 +34,14 @@ namespace ModsenTask.Application.Services
                 return null;
             return _mapper.Map<BookResponse>(book);
         }
-        public async Task<Guid> AddBookAsync(BookRequest bookRequest)
+        public async Task<(bool, Guid)> AddBookAsync(BookRequest bookRequest)
         {
             Book book = _mapper.Map<Book>(bookRequest);
             book.Id = Guid.NewGuid();
-            await _bookRepository.AddBookAsync(book);
-            return book.Id;
+            bool result = await _bookRepository.AddBookAsync(book);
+            if (!result)
+                return (false, Guid.Empty);
+            return (true, book.Id);
         }
         public async Task UpdateBookAsync(Book book)
         {

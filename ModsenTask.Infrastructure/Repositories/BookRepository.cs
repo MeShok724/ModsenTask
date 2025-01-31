@@ -25,10 +25,15 @@ namespace ModsenTask.Infrastructure.Repositories
             return await _context.Books
                 .FirstOrDefaultAsync(b => b.ISBN == isbn);
         }
-        public async Task AddBookAsync(Book book)
+        public async Task<bool> AddBookAsync(Book book)
         {
+            var authorExists = await _context.Authors
+                .FindAsync(book.AuthorId);
+            if (authorExists == null)
+                return false;
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
+            return true;
         }
         public async Task UpdateBookAsync(Book book)
         {

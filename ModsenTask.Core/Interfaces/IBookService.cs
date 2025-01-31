@@ -5,7 +5,7 @@ namespace ModsenTask.Application.Services
 {
     public interface IBookService
     {
-        Task<Guid> AddBookAsync(BookRequest bookRequest);
+        Task<(bool, Guid)> AddBookAsync(BookRequest bookRequest);
         Task<bool> DeleteBookAsync(Guid bookId);
         Task<List<BookResponse>> GetAllBooksAsync();
         Task<BookResponse?> GetBookByIdAsync(Guid bookId);

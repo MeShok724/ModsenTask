@@ -4,7 +4,7 @@ namespace ModsenTask.Infrastructure.Repositories
 {
     public interface IBookRepository
     {
-        Task AddBookAsync(Book book);
+        Task<bool> AddBookAsync(Book book);
         Task DeleteBookAsync(Guid bookId);
         Task<List<Book>> GetAllBooksAsync();
         Task<Book?> GetBookByIdAsync(Guid bookId);

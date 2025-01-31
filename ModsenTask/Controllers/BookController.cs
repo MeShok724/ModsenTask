@@ -21,7 +21,7 @@ namespace ModsenTask.API.Controllers
         public async Task<ActionResult<BookResponse>> GetBookById(Guid id)
         {
             var book = await _bookService.GetBookByIdAsync(id);
-            return book is not null ? Ok(book) : NotFound();
+            return book == null ? Ok(book) : NotFound();
         }
         [HttpGet("isbn/{isbn}")]
         public async Task<ActionResult<BookResponse>> GetBookByIsbn(string isbn)
@@ -35,8 +35,10 @@ namespace ModsenTask.API.Controllers
             if (book is null)
                 return BadRequest("Некорректные данные");
 
-            Guid guid = await _bookService.AddBookAsync(book);
-            return guid;
+            var result = await _bookService.AddBookAsync(book);
+            if (!result.Item1)
+                return BadRequest("Некорректные данные");
+            return Ok(result.Item2);
         }
         [HttpPut]
         public async Task<ActionResult> UpdateBook([FromBody] Book book)
