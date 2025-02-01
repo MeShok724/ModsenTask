@@ -36,7 +36,12 @@ namespace ModsenTask.Infrastructure.Repositories
 
         public async Task UpdateUserAsync(User user)
         {
-            _context.Users.Update(user);
+            var userToUpdate = await _context.Users
+                .FindAsync(user.Id);
+            if (userToUpdate == null)
+                return;
+
+            _context.Entry(userToUpdate).CurrentValues.SetValues(user);
             await _context.SaveChangesAsync();
         }
 

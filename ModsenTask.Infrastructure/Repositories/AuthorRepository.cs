@@ -31,11 +31,7 @@ namespace ModsenTask.Infrastructure.Repositories
             if (authorToUpdate == null)
                 return;
 
-            authorToUpdate.FirstName = author.FirstName;
-            authorToUpdate.LastName = author.LastName;
-            authorToUpdate.DateOfBirth = author.DateOfBirth;
-            authorToUpdate.Country = author.Country;
-
+            _context.Entry(authorToUpdate).CurrentValues.SetValues(author);
             await _context.SaveChangesAsync();
         }
 
