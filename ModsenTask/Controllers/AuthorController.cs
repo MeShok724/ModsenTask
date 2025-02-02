@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ModsenTask.Application.DTOs;
 using ModsenTask.Application.Services;
 
@@ -26,6 +27,7 @@ namespace ModsenTask.API.Controllers
             return Ok(author);
         }
 
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPost]
         public async Task<ActionResult<Guid>> AddAuthor([FromBody] AuthorRequest authorRequest)
         {
@@ -33,6 +35,7 @@ namespace ModsenTask.API.Controllers
             return Ok(guid);
         }
 
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPut("{authorId:Guid}")]
         public async Task<ActionResult> UpdateAuthor(Guid authorId, [FromBody] AuthorRequest authorRequest)
         {
@@ -42,6 +45,7 @@ namespace ModsenTask.API.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "AdminPolicy")]
         [HttpDelete("{authorId:guid}")]
         public async Task<ActionResult> DeleteAuthor(Guid authorId)
         {

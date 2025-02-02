@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ModsenTask.Application.Services;
 using ModsenTask.Contracts.DTOs;
 using System.Reflection.Metadata.Ecma335;

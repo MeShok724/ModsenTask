@@ -8,6 +8,9 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using ModsenTask.Application.Validators;
 using ModsenTask.Infrastructure.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +43,36 @@ builder.Services.AddValidatorsFromAssemblyContaining<BookRequestValidator>();
 builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection("JwtSettings")
 );
+
+// аутентификация через JWT
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Secret"]))
+        };
+    });
+
+// policy-based авторизация
+builder.Services.AddAuthorization(options =>
+{
+    // policy для "Admin"
+    options.AddPolicy("AdminPolicy", policy =>
+        policy.RequireRole("Admin"));
+
+    // policy для авторизованных пользователей
+    options.AddPolicy("AuthenticatedUsersOnly", policy =>
+        policy.RequireAuthenticatedUser());
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

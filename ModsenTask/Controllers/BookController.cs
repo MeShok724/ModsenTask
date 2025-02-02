@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ModsenTask.Application.DTOs;
 using ModsenTask.Application.Services;
 using ModsenTask.Core.Entities;
@@ -29,6 +30,8 @@ namespace ModsenTask.API.Controllers
             var book = await _bookService.GetBookByIsbnAsync(isbn);
             return book is not null ? Ok(book) : NotFound();
         }
+
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPost]
         public async Task<ActionResult<Guid>> AddBook([FromBody] BookRequest book)
         {
@@ -40,6 +43,8 @@ namespace ModsenTask.API.Controllers
                 return BadRequest("Некорректные данные");
             return Ok(result.Item2);
         }
+
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPut("{bookId:Guid}")]
         public async Task<ActionResult> UpdateBook(Guid bookId, [FromBody] BookRequest bookRequest)
         {
@@ -48,12 +53,16 @@ namespace ModsenTask.API.Controllers
                 return NotFound();
             return Ok();
         }
+
+        [Authorize(Policy = "AdminPolicy")]
         [HttpDelete("{id:Guid}")]
         public async Task<ActionResult> DeleteBook(Guid id)
         {
             var result = await _bookService.DeleteBookAsync(id);
             return result ? Ok() : NotFound();
         }
+
+        [Authorize(Policy = "AuthenticatedUsersOnly")]
         [HttpPost("{bookId:Guid}/lend/{userId:Guid}")]
         public async Task<ActionResult> LendBook(Guid bookId, Guid userId, [FromQuery] DateTime returnDate)
         {
