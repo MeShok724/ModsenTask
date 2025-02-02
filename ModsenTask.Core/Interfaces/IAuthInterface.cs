@@ -1,4 +1,5 @@
 ﻿using ModsenTask.Application.DTOs;
+using ModsenTask.Contracts.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

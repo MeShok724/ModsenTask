@@ -7,6 +7,7 @@ using ModsenTask.Infrastructure.Repositories;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using ModsenTask.Application.Validators;
+using ModsenTask.Infrastructure.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,7 @@ builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // регистрация auto mapper
 builder.Services.AddAutoMapper(typeof(AuthorProfile), typeof(BookProfile));
@@ -33,6 +35,11 @@ builder.Services.AddControllers();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<BookRequestValidator>();
+
+// добавление конфигурации jwt
+builder.Services.Configure<JwtSettings>(
+    builder.Configuration.GetSection("JwtSettings")
+);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
