@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ModsenTask.API.Exceptions;
 using ModsenTask.Application.DTOs;
 using ModsenTask.Application.Services;
 using ModsenTask.Core.Entities;
@@ -22,25 +23,26 @@ namespace ModsenTask.API.Controllers
         public async Task<ActionResult<BookResponse>> GetBookById(Guid id)
         {
             var book = await _bookService.GetBookByIdAsync(id);
-            return book == null ? Ok(book) : NotFound();
+            if (book == null)
+                throw new NotFoundException("Книга не найдена");
+            return Ok(book);
         }
         [HttpGet("isbn/{isbn}")]
         public async Task<ActionResult<BookResponse>> GetBookByIsbn(string isbn)
         {
             var book = await _bookService.GetBookByIsbnAsync(isbn);
-            return book is not null ? Ok(book) : NotFound();
+            if (book == null)
+                throw new NotFoundException("Книга не найдена");
+            return Ok(book);
         }
 
         [Authorize(Policy = "AdminPolicy")]
         [HttpPost]
         public async Task<ActionResult<Guid>> AddBook([FromBody] BookRequest book)
         {
-            if (book is null)
-                return BadRequest("Некорректные данные");
-
             var result = await _bookService.AddBookAsync(book);
             if (!result.Item1)
-                return BadRequest("Некорректные данные");
+                throw new BadRequestException("Некорректные данные");
             return Ok(result.Item2);
         }
 
@@ -50,7 +52,7 @@ namespace ModsenTask.API.Controllers
         {
             bool result = await _bookService.UpdateBookAsync(bookId, bookRequest);
             if (!result)
-                return NotFound();
+                throw new BadRequestException("Невозможно обновить книгу");
             return Ok();
         }
 
@@ -59,7 +61,9 @@ namespace ModsenTask.API.Controllers
         public async Task<ActionResult> DeleteBook(Guid id)
         {
             var result = await _bookService.DeleteBookAsync(id);
-            return result ? Ok() : NotFound();
+            if (!result)
+                throw new BadRequestException("Невозможно удалить книгу");
+            return Ok();
         }
 
         [Authorize(Policy = "AuthenticatedUsersOnly")]
@@ -67,7 +71,9 @@ namespace ModsenTask.API.Controllers
         public async Task<ActionResult> LendBook(Guid bookId, Guid userId, [FromQuery] DateTime returnDate)
         {
             var result = await _bookService.LendBookAsync(bookId, userId, returnDate);
-            return result ? Ok() : BadRequest("Невозможно выдать книгу");
+            if (!result)
+                throw new BadRequestException("Невозможно выдать книгу");
+            return Ok();
         }
 
         //[HttpPut("{bookId:guid}/image")]

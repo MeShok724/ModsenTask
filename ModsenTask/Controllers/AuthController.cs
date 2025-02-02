@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ModsenTask.API.Exceptions;
 using ModsenTask.Application.Services;
 using ModsenTask.Contracts.DTOs;
 using System.Reflection.Metadata.Ecma335;
@@ -17,7 +18,7 @@ namespace ModsenTask.API.Controllers
         {
             var result = await _authService.RegisterAsync(request);
             if (result == null)
-                return BadRequest();
+                throw new BadRequestException("Невозможно зарегистрировать пользователя");
             return Ok(result);
         }
 
@@ -25,8 +26,8 @@ namespace ModsenTask.API.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var result = await _authService.LoginAsync(request);
-            if (result == null) 
-                return BadRequest();
+            if (result == null)
+                throw new BadRequestException("Неправильные данные для входа");
             return Ok(result);
         }
 
@@ -35,7 +36,7 @@ namespace ModsenTask.API.Controllers
         {
             var result = await _authService.RefreshTokenAsync(email, refreshToken);
             if (result == null)
-                return BadRequest();
+                throw new BadRequestException("Невозможно обновить токен");
             return Ok(result);
         }
     }

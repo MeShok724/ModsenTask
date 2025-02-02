@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ModsenTask.API.Exceptions;
 using ModsenTask.Application.DTOs;
 using ModsenTask.Application.Services;
 
@@ -22,8 +23,8 @@ namespace ModsenTask.API.Controllers
         public async Task<ActionResult<AuthorResponse>> GetAuthorById(Guid authorId)
         {
             var author = await _authorService.GetAuthorByIdAsync(authorId);
-            if (author == null) 
-                return NotFound();
+            if (author == null)
+                throw new NotFoundException("Автор не найден");
             return Ok(author);
         }
 
@@ -32,6 +33,8 @@ namespace ModsenTask.API.Controllers
         public async Task<ActionResult<Guid>> AddAuthor([FromBody] AuthorRequest authorRequest)
         {
             Guid guid = await _authorService.AddAuthorAsync(authorRequest);
+            if (guid == Guid.Empty)
+                throw new BadRequestException("Невозможно добавить автора");
             return Ok(guid);
         }
 
@@ -41,7 +44,7 @@ namespace ModsenTask.API.Controllers
         {
             bool result = await _authorService.UpdateAuthorAsync(authorId, authorRequest);
             if (!result)
-                return NotFound();
+                throw new BadRequestException("Невозможно обновить автора");
             return Ok();
         }
 
@@ -51,7 +54,7 @@ namespace ModsenTask.API.Controllers
         {
             bool result = await _authorService.DeleteAuthorAsync(authorId);
             if (!result)
-                return NotFound();
+                throw new BadRequestException("Невозможно удалить автора");
             return Ok();
         }
 
@@ -59,8 +62,6 @@ namespace ModsenTask.API.Controllers
         public async Task<ActionResult<List<BookResponse>>> GetBooksByAuthorId(Guid authorId)
         {
             var books = await _authorService.GetBooksByAuthorAsync(authorId);
-            if (books == null)
-                return NotFound();
             return Ok(books);
         }
     }
