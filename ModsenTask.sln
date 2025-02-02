@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenTask.Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenTask.Contracts", "ModsenTask.Contracts\ModsenTask.Contracts.csproj", "{E59607D5-93C8-4ED7-9A9C-A1206C1D1E9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenTask.Tests", "ModsenTask.Tests\ModsenTask.Tests.csproj", "{D4597D52-4F78-4148-BD3C-C7830E891DAE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{E59607D5-93C8-4ED7-9A9C-A1206C1D1E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E59607D5-93C8-4ED7-9A9C-A1206C1D1E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E59607D5-93C8-4ED7-9A9C-A1206C1D1E9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4597D52-4F78-4148-BD3C-C7830E891DAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4597D52-4F78-4148-BD3C-C7830E891DAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4597D52-4F78-4148-BD3C-C7830E891DAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4597D52-4F78-4148-BD3C-C7830E891DAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
