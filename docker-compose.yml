@@ -1,0 +1,36 @@
+services:
+  app:
+    build: .
+    container_name: modsen-app-cont
+    ports:
+      - "5000:5000"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=modsendb;Username=postgres;Password=postgres
+      - ASPNETCORE_URLS=http://0.0.0.0:5000
+    networks:
+      - app-network
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    container_name: modsen-db-cont
+    restart: always
+    environment:
+      POSTGRES_DB: modsendb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      # - pgdata:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+
+volumes:
+  pgdata:
+
+networks:
+  app-network:
+    driver: bridge
