@@ -26,5 +26,3 @@ AuthProvider.propTypes = {
 export const useAuth = () => {
     return useContext(AuthContext)
 }
-
-// export { } // Добавь это, если Vite все равно выдает ошибку
